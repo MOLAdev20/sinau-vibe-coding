@@ -1,7 +1,7 @@
 {
   "name": "sinau-vibe-coding",
   "version": "1.0.0",
-  "description": "",
+  "description": "Minimal server and database setup starter",
   "homepage": "https://github.com/MOLAdev20/sinau-vibe-coding#readme",
   "bugs": {
     "url": "https://github.com/MOLAdev20/sinau-vibe-coding/issues"
@@ -13,8 +13,21 @@
   "license": "ISC",
   "author": "sabil",
   "type": "module",
-  "main": "index.js",
+  "main": "src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node --watch src/app.js",
+    "start": "node src/app.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "test": "echo \"No tests configured\""
+  },
+  "dependencies": {
+    "@prisma/client": "^6.7.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "prisma": "^6.7.0"
   }
 }
