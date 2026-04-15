@@ -6,6 +6,18 @@ const createProduct = async (payload) => {
   });
 };
 
+const findAllProducts = async () => {
+  return prisma.product.findMany({
+    orderBy: { id: 'desc' },
+  });
+};
+
+const findProductById = async (id) => {
+  return prisma.product.findUnique({
+    where: { id },
+  });
+};
+
 const updateProductById = async (id, payload) => {
   return prisma.product.update({
     where: { id },
@@ -19,4 +31,10 @@ const deleteProductById = async (id) => {
   });
 };
 
-export { createProduct, updateProductById, deleteProductById };
+export {
+  createProduct,
+  findAllProducts,
+  findProductById,
+  updateProductById,
+  deleteProductById,
+};

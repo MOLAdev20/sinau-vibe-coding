@@ -1,6 +1,8 @@
 import {
   createProduct,
   deleteProductById,
+  findAllProducts,
+  findProductById,
   updateProductById,
 } from '../models/productModel.js';
 
@@ -79,6 +81,20 @@ const mapDeleteProductError = (error, res) => {
   });
 };
 
+const mapGetProductError = (error, res) => {
+  if (error?.code === 'P1001') {
+    return res.status(503).json({
+      status: 'network-error',
+      message: 'network error',
+    });
+  }
+
+  return res.status(500).json({
+    status: 'internal-error',
+    message: 'internal server error',
+  });
+};
+
 const createProductHandler = async (req, res) => {
   const validationError = validateProductRequest(req.body);
 
@@ -99,6 +115,57 @@ const createProductHandler = async (req, res) => {
     });
   } catch (error) {
     return mapProductError(error, res);
+  }
+};
+
+const getAllProductsHandler = async (req, res) => {
+  try {
+    const products = await findAllProducts();
+
+    if (!products.length) {
+      return res.status(404).json({
+        status: 'not-found',
+        message: 'product not found',
+      });
+    }
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Product successfully fetched!',
+      data: products,
+    });
+  } catch (error) {
+    return mapGetProductError(error, res);
+  }
+};
+
+const getProductByIdHandler = async (req, res) => {
+  const productId = Number(req.params.id);
+
+  if (!Number.isInteger(productId) || productId <= 0) {
+    return res.status(400).json({
+      status: 'validation-error',
+      message: 'bad request',
+    });
+  }
+
+  try {
+    const product = await findProductById(productId);
+
+    if (!product) {
+      return res.status(404).json({
+        status: 'not-found',
+        message: 'product not found',
+      });
+    }
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Product successfully fetched!',
+      data: product,
+    });
+  } catch (error) {
+    return mapGetProductError(error, res);
   }
 };
 
@@ -156,4 +223,10 @@ const deleteProductHandler = async (req, res) => {
   }
 };
 
-export { createProductHandler, updateProductHandler, deleteProductHandler };
+export {
+  createProductHandler,
+  getAllProductsHandler,
+  getProductByIdHandler,
+  updateProductHandler,
+  deleteProductHandler,
+};
