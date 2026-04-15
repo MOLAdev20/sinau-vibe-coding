@@ -1,7 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
 import { fileURLToPath } from 'node:url';
-import helloRoute from './routes/helloRoute.js';
 import productRoute from './routes/productRoute.js';
 
 const app = express();
