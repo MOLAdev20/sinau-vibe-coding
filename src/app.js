@@ -3,11 +3,13 @@ import express from 'express';
 import { fileURLToPath } from 'node:url';
 import authorizationMiddleware from './middlewares/authorizationMiddleware.js';
 import productRoute from './routes/productRoute.js';
+import tokenRoute from './routes/tokenRoute.js';
 
 const app = express();
 const port = Number(process.env.PORT || 3000);
 
 app.use(express.json());
+app.use('/token', tokenRoute);
 app.use('/product', authorizationMiddleware, productRoute);
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
