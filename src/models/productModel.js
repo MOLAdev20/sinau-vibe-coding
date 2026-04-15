@@ -13,4 +13,10 @@ const updateProductById = async (id, payload) => {
   });
 };
 
-export { createProduct, updateProductById };
+const deleteProductById = async (id) => {
+  return prisma.product.delete({
+    where: { id },
+  });
+};
+
+export { createProduct, updateProductById, deleteProductById };
